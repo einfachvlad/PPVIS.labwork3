@@ -1,5 +1,6 @@
 package View;
 
+import Controller.BuildFunction;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,13 +9,14 @@ import java.awt.*;
 public class Window {
     public JFrame mainwindow;
     JTable table;
+    Graphic grap;
     GraphTableModel tableModel;
 
     public Window() {
         mainwindow = new JFrame("Лабораторная работа №3");
         mainwindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        Graphic grap = new Graphic();
+        grap = new Graphic();
         mainwindow.add(table(), BorderLayout.WEST);
         mainwindow.add(grap,BorderLayout.CENTER);
         mainwindow.add(buttons(), BorderLayout.SOUTH);
@@ -37,13 +39,22 @@ public class Window {
     }
 
 
-    private JPanel buttons() {
-        JPanel buttons = new JPanel();
+    private Box buttons() {
+        Box buttons = Box.createHorizontalBox();
+
+        JButton inputFunction = new JButton("Задание функции");
+        inputFunction.addActionListener(new BuildFunction(table,grap));
         JLabel scale = new JLabel("Заглушка");
         JButton startGraphich = new JButton("Построить график");
+
+        buttons.add(Box.createHorizontalStrut(6));
+        buttons.add(inputFunction);
+        buttons.add(Box.createHorizontalStrut(200));
         buttons.add(scale);
+        buttons.add(Box.createHorizontalStrut(6));
         buttons.add(startGraphich);
         return buttons;
 
     }
+
 }
