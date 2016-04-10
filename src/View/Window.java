@@ -1,6 +1,8 @@
 package View;
 
+import Controller.Build;
 import Controller.BuildFunction;
+import Controller.OpenInputAction;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -43,9 +45,10 @@ public class Window {
         Box buttons = Box.createHorizontalBox();
 
         JButton inputFunction = new JButton("Задание функции");
-        inputFunction.addActionListener(new BuildFunction(table,grap));
+        inputFunction.addActionListener(new OpenInputAction());
         JLabel scale = new JLabel("Заглушка");
         JButton startGraphich = new JButton("Построить график");
+        startGraphich.addActionListener(new Build());
 
         buttons.add(Box.createHorizontalStrut(6));
         buttons.add(inputFunction);

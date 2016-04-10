@@ -37,7 +37,7 @@ public class Graphic extends JPanel {
         }
 
         betweenPointsX = maxX / X.size();
-        betweenPointsY = maxY / X.size();
+        betweenPointsY = maxY / Y.size();
         pointX = (int) ((xLength * halfX) / maxX);
         pointY = (int) (yLength * halfY) / maxY;
         if (maxX != 0 && maxY != 0)
@@ -91,7 +91,7 @@ public class Graphic extends JPanel {
         if (XYAvailible) {
             int my = maxY;
             int lY = 0;
-            pointCount = maxY / 2;
+            pointCount = maxY/2;
             for (int i = 0; i < pointCount; i++) {
                 g.drawString(Integer.toString((int) my), (int) (xLength * halfX + startX + margin) - 20, (int) (lY + pointY + startY - margin));
                 my = my - betweenPointsY;
