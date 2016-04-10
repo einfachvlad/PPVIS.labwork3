@@ -11,9 +11,6 @@ public class Point {
     private int numberOfArrays;
     private int maxCountElements;
     private int countOfElements;
-    String inFile = "input.txt";
-    String outFile1 = "out1.txt";
-    String outFile2 = "out2.txt";
     int X;
     int Y;
     List<List<Integer>> arraysX = new ArrayList<>();
@@ -60,9 +57,7 @@ public class Point {
     private void externalSort(List<List<Integer>> arrays) {
         for (List array : arrays) {
             seriesCreating(array);
-            writeFile(series);
-            readFile();
-
+            mergeDevide(series);
         }
 
     }
@@ -87,87 +82,41 @@ public class Point {
         return series;
     }
 
-    private void writeFile(List<List<Integer>> series) {
-        File file = new File(inFile);
-        try {
-            //проверяем, что если файл не существует то создаем его
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+    private void mergeDevide(List<List<Integer>> series) {
+        List<List<Integer>> arrays1 = new ArrayList<>();
+        List<List<Integer>> arrays2 = new ArrayList<>();
 
-            //PrintWriter обеспечит возможности записи в файл
-            PrintWriter in = new PrintWriter(file.getAbsoluteFile());
-
-            try {
-                for (List seria : series) {
-                    for (Object element : seria) {
-                        in.print(element);
-                        in.print(" ");
-                    }
-                    in.print("\n");
-                }
-            } finally {
-                //После чего мы должны закрыть файл
-                //Иначе файл не запишется
-                in.close();
+        while(series.size()!=1)
+        {
+        boolean swap = true;
+        for (List<Integer> seria : series) {
+            if (swap) {
+                arrays1.add(seria);
+                swap = !swap;
+            } else {
+                arrays2.add(seria);
+                swap = !swap;
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-    }
 
-    private String readFile() {
+        series.clear();
 
-        File inputFile = new File(inFile);
-        File outputFile1 = new File(outFile1);
-        File outputFile2 = new File(outFile2);
+        Iterator iterator = arrays2.iterator();
+        for (List<Integer> array1 : arrays1) {
+            List<Integer> array = new ArrayList<>();
+            array.addAll(array1);
+            if (iterator.hasNext())
+                array.addAll((List) iterator.next());
+            internalSort(array);
+            series.add(array);
 
-
-        //Этот спец. объект для построения строки
-        StringBuilder sb = new StringBuilder();
-
-        try {
-            PrintWriter out1 = new PrintWriter(outputFile1.getAbsoluteFile());
-            PrintWriter out2 = new PrintWriter(outputFile2.getAbsoluteFile());
-
-
-            try {
-                //Объект для чтения файла в буфер
-                BufferedReader in = new BufferedReader(new FileReader(inputFile.getAbsoluteFile()));
-                try {
-                    //В цикле построчно считываем файл
-                    String s;
-                    boolean swap = true;
-                    while ((s = in.readLine()) != null) {
-                        sb.append(s);
-                        //sb.append("\n");
-                        if (swap) {
-                            out1.println(sb);
-                            swap = !swap;
-                            sb.delete(0, sb.length());
-                        } else {
-                            out2.println(sb);
-                            swap = !swap;
-                            sb.delete(0, sb.length());
-                        }
-
-
-                    }
-                } finally {
-                    //Также не забываем закрыть файл
-                    in.close();
-                    out1.close();
-                    out2.close();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (FileNotFoundException e) {
         }
-        //Возвращаем полученный текст с файла
-        return sb.toString();
-    }
+            arrays1.clear();
+            arrays2.clear();
 
+    }
+        System.out.println("");
+    }
 
     private void show(List array) {
         for (Object element : array) {
