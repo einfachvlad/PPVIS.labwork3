@@ -1,15 +1,18 @@
 package View;
 
-import Controller.Build;
-import Controller.BuildFunction;
-import Controller.OpenInputAction;
+import Controller.*;
+import Model.Scale;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class Window {
+public class Window  {
+    public int numberOfArrays=0;
+    public int numberOfElements=0;
     public JFrame mainwindow;
+    JLabel scaleLabel=new JLabel();
+    Scale scale=new Scale();
     JTable table;
     Graphic grap;
     GraphTableModel tableModel;
@@ -19,11 +22,18 @@ public class Window {
         mainwindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         grap = new Graphic();
+
         mainwindow.add(table(), BorderLayout.WEST);
-        mainwindow.add(grap,BorderLayout.CENTER);
+        mainwindow.add(grap, BorderLayout.CENTER);
         mainwindow.add(buttons(), BorderLayout.SOUTH);
-        mainwindow.setSize(690,550);
+
+        Zoom zoom=new Zoom(scale,scaleLabel);
+        mainwindow.addMouseListener(zoom);
+        mainwindow.addMouseWheelListener(zoom);
+
+        mainwindow.setSize(690, 550);
         mainwindow.setVisible(true);
+
     }
 
     private JComponent table() {
@@ -45,15 +55,16 @@ public class Window {
         Box buttons = Box.createHorizontalBox();
 
         JButton inputFunction = new JButton("Задание функции");
-        inputFunction.addActionListener(new OpenInputAction());
-        JLabel scale = new JLabel("Заглушка");
+        inputFunction.addActionListener(new OpenInputAction(this));
+        scaleLabel.setText(scale.getCurrentScale());
         JButton startGraphich = new JButton("Построить график");
-        startGraphich.addActionListener(new Build());
+        startGraphich.addActionListener(new Build(table,grap,this));
+
 
         buttons.add(Box.createHorizontalStrut(6));
         buttons.add(inputFunction);
         buttons.add(Box.createHorizontalStrut(200));
-        buttons.add(scale);
+        buttons.add(scaleLabel);
         buttons.add(Box.createHorizontalStrut(6));
         buttons.add(startGraphich);
         return buttons;

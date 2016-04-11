@@ -9,9 +9,12 @@ import java.util.List;
 public class Graphic extends JPanel {
     private int pointWidth, nx, startY, oyk, oyx, startX, oxk, oxy, yLength, xLength, sw, xln, l2, margin, point, pointX, maxY, maxX, betweenPointsX, pointY, betweenPointsY;
     private double xng, halfX, halfY, hx, yg, xk;
+    private int hX,hY;
     private boolean XYAvailible = false;
-    private List<Integer> X;
-    private List<Long> Y;
+    private List<Integer> xList;
+    private List<Integer> yList;
+    private int X;
+    private int Y;
 
     public Graphic() {
         startY = 50; // начальный отступ по y
@@ -19,14 +22,31 @@ public class Graphic extends JPanel {
         yLength = 400; // длина оси у
         xLength = 400; // длина оси х
         halfX = halfY = (double) 0.5;
+        hX=hY=200;
         margin = 10;
         point = 10;
+        xList=new ArrayList<>();
+        yList=new ArrayList<>();
 
         if (maxX != 0.0 && maxY != 0.0)
             XYAvailible = true;
     }
 
-    public void setMaxMeasures(List<Integer> X, List<Long> Y) {
+    public void paintPoint( Graphics2D g2d) {
+        g2d.drawLine(margin+startX+hX+X,margin+startY+hY-Y,margin+startX+hX+X,margin+startY+hY-Y);
+    }
+
+    public void setCoordinats(int X, long Y) {
+        this.X = X;
+        this.Y=(int)Y;
+        xList.add(margin+startX+hX+this.X);
+        yList.add(margin+startY+hY-this.Y);
+
+        XYAvailible = true;
+
+    }
+
+   /* public void setMaxMeasures(List<Integer> X, List<Long> Y) {
         this.X = X;
         this.Y = Y;
         maxX = X.get(X.size() - 1);
@@ -43,18 +63,17 @@ public class Graphic extends JPanel {
         if (maxX != 0 && maxY != 0)
             XYAvailible = true;
 
-    }
+    }*/
 
     public void paintGraphich(Graphics2D g2d) {
-        int[] xArray = new int[X.size()];
-        int[] yArray = new int[Y.size()];
-        for (int date : X) {
-            xArray[X.indexOf(date)] = (int) (xLength * halfX) + margin + startX + (date * pointX);
-            yArray[X.indexOf(date)] = (int) ((yLength * halfX) + margin + startY-
-                    (Y.get(X.indexOf(date)) * pointY));
+        int[] xArray = new int[xList.size()];
+        int[] yArray = new int[yList.size()];
+        for (int index=0;index<xList.size();index++) {
+            xArray[index] = xList.get(index);
+            yArray[index] = yList.get(index);
         }
 
-        g2d.drawPolyline(xArray, yArray, X.size());
+        g2d.drawPolyline(xArray, yArray, xList.size());
 
     }
 
@@ -79,7 +98,7 @@ public class Graphic extends JPanel {
         // Надпись
         g2d.drawString("Y", (int) (xLength * halfX + startX + margin) - 10, startY - margin + 10);
         //Деления
-        int ly = yLength;
+       /* int ly = yLength;
         int pointCount = (int) yLength / point;
         for (int i = 0; i < pointCount + 1; i++) {
             g2d.drawLine((int) (xLength * halfX - 2 + startX + margin), ly - point + startY + margin,
@@ -104,7 +123,7 @@ public class Graphic extends JPanel {
                 my = my - betweenPointsY;
                 lY = lY + pointX;
             }
-        }
+        }*/
 
 
         g2d.drawString("0", (int) (xLength * halfX + startX + margin) - 10, (int) (yLength * halfY + startY) + margin + 10);
@@ -120,7 +139,7 @@ public class Graphic extends JPanel {
         g2d.drawString("Х", xLength + startX + margin - 10, (int) (yLength * halfY + startY) + margin - 10);
 
         //Деления
-        int lx = xLength;
+       /* int lx = xLength;
         pointCount = (int) xLength / point;
         for (int i = 1; i < pointCount + 1; i++) {
             g.drawLine((lx - point + startX + margin), (int) (yLength * halfY + 2 + startY + margin),
@@ -143,9 +162,9 @@ public class Graphic extends JPanel {
                 mx = mx - betweenPointsX;
                 lx = lx - pointX;
             }
-        }
-        if (XYAvailible)
-            paintGraphich(g2d);
+        }*/
+       if (XYAvailible)
+           paintGraphich(g2d);
 
         super.repaint();
     }

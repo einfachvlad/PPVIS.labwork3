@@ -79,7 +79,7 @@ public class BuildFunction implements ActionListener {
         GraphTableModel model = new GraphTableModel(X, Y);
         table.setModel(model.getModel());
 
-        grap.setMaxMeasures(X,Y);
+       // grap.setMaxMeasures(X,Y);
 
     }
 }
