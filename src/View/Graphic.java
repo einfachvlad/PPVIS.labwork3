@@ -8,13 +8,18 @@ import java.util.List;
 
 public class Graphic extends JPanel {
     private int pointWidth, nx, startY, oyk, oyx, startX, oxk, oxy, yLength, xLength, sw, xln, l2, margin, point, pointX, maxY, maxX, betweenPointsX, pointY, betweenPointsY;
-    private double xng, halfX, halfY, hx, yg, xk;
-    private int hX,hY;
+    private double halfX, halfY;
+    private int hX, hY;
     private boolean XYAvailible = false;
     private List<Integer> xList;
     private List<Integer> yList;
     private int X;
     private int Y;
+    int zoomLengthX;
+    int zoomLengthY;
+    int zoomStartX;
+    int zoomStartY;
+
 
     public Graphic() {
         startY = 50; // начальный отступ по y
@@ -22,25 +27,31 @@ public class Graphic extends JPanel {
         yLength = 400; // длина оси у
         xLength = 400; // длина оси х
         halfX = halfY = (double) 0.5;
-        hX=hY=200;
+        hX = hY = 200;
         margin = 10;
         point = 10;
-        xList=new ArrayList<>();
-        yList=new ArrayList<>();
+        xList = new ArrayList<>();
+        yList = new ArrayList<>();
+
+        zoomLengthX = (xLength * 25 / 100);
+        zoomLengthY = (yLength * 25 / 100);
+
+        zoomStartX=(startX*25/100);
+        zoomStartY=(startY*25/100);
 
         if (maxX != 0.0 && maxY != 0.0)
             XYAvailible = true;
     }
 
-    public void paintPoint( Graphics2D g2d) {
-        g2d.drawLine(margin+startX+hX+X,margin+startY+hY-Y,margin+startX+hX+X,margin+startY+hY-Y);
+    public void paintPoint(Graphics2D g2d) {
+        g2d.drawLine(margin + startX + hX + X, margin + startY + hY - Y, margin + startX + hX + X, margin + startY + hY - Y);
     }
 
     public void setCoordinats(int X, long Y) {
         this.X = X;
-        this.Y=(int)Y;
-        xList.add(margin+startX+hX+this.X);
-        yList.add(margin+startY+hY-this.Y);
+        this.Y = (int) Y;
+        xList.add(margin + startX + hX + this.X);
+        yList.add(margin + startY + hY - this.Y);
 
         XYAvailible = true;
 
@@ -66,15 +77,56 @@ public class Graphic extends JPanel {
     }*/
 
     public void paintGraphich(Graphics2D g2d) {
-        int[] xArray = new int[xList.size()];
-        int[] yArray = new int[yList.size()];
-        for (int index=0;index<xList.size();index++) {
-            xArray[index] = xList.get(index);
-            yArray[index] = yList.get(index);
+        try {
+            Iterator xIterator = xList.iterator();
+            Iterator yIterator = yList.iterator();
+
+            int nextX = (int) xIterator.next();
+            int nextY = (int) yIterator.next();
+
+            int currentX;
+            int currentY;
+
+            while (xIterator.hasNext() && yIterator.hasNext()) {
+
+                currentX = nextX;
+                currentY = nextY;
+                nextX = (int) xIterator.next();
+                nextY = (int) yIterator.next();
+                g2d.drawLine(currentX, currentY, nextX, nextY);
+
+            }
+        } catch (ConcurrentModificationException e) {
         }
 
-        g2d.drawPolyline(xArray, yArray, xList.size());
+           /* int[] xArray = new int[xList.size()];
+            int[] yArray = new int[yList.size()];
+            Iterator iterator = yList.iterator();
+            for (int date : xList) {
+                xArray[xList.indexOf(date)] = date;
+                yArray[xList.indexOf(date)] = (int) iterator.next();
+            }
+            g2d.drawPolyline(xArray, yArray, xList.size());*/
 
+    }
+
+    public void zoomIn() {
+
+        xLength = xLength + zoomLengthX;
+        yLength = yLength + zoomLengthY;
+
+        startX-=zoomStartX;
+        startY-=zoomStartY;
+
+    }
+
+    public void zoomOut() {
+
+        xLength = xLength - zoomLengthX;
+        yLength = yLength - zoomLengthY;
+
+        startX+=zoomStartX;
+        startY+=zoomStartY;
     }
 
     @Override
@@ -163,8 +215,8 @@ public class Graphic extends JPanel {
                 lx = lx - pointX;
             }
         }*/
-       if (XYAvailible)
-           paintGraphich(g2d);
+        if (XYAvailible)
+            paintGraphich(g2d);
 
         super.repaint();
     }

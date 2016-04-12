@@ -35,14 +35,14 @@ public class BuildThread implements Runnable {
             Y.add(point.getAverageSortTime());
             GraphTableModel model = new GraphTableModel(X, Y);
             table.setModel(model.getModel());
-           // grap.setCoordinats(currentCountElements-4998,point.getAverageSortTime());
+            grap.setCoordinats(currentCountElements,point.getAverageSortTime());
             currentCountElements++;
 
-            /*try {
+            try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 return;
-            }*/
+            }
         }
 
     }

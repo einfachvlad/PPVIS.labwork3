@@ -6,13 +6,15 @@ import Model.Scale;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Window  {
-    public int numberOfArrays=0;
-    public int numberOfElements=0;
+public class Window {
+    public int numberOfArrays = 0;
+    public int numberOfElements = 0;
     public JFrame mainwindow;
-    JLabel scaleLabel=new JLabel();
-    Scale scale=new Scale();
+    JLabel scaleLabel = new JLabel();
+    Scale scale = new Scale();
     JTable table;
     Graphic grap;
     GraphTableModel tableModel;
@@ -27,7 +29,7 @@ public class Window  {
         mainwindow.add(grap, BorderLayout.CENTER);
         mainwindow.add(buttons(), BorderLayout.SOUTH);
 
-        Zoom zoom=new Zoom(scale,scaleLabel);
+        Zoom zoom = new Zoom(scale, scaleLabel, grap);
         mainwindow.addMouseListener(zoom);
         mainwindow.addMouseWheelListener(zoom);
 
@@ -57,9 +59,13 @@ public class Window  {
         JButton inputFunction = new JButton("Задание функции");
         inputFunction.addActionListener(new OpenInputAction(this));
         scaleLabel.setText(scale.getCurrentScale());
-        JButton startGraphich = new JButton("Построить график");
-        startGraphich.addActionListener(new Build(table,grap,this));
 
+        Build build = new Build(table, grap, this);
+        JButton startGraphich = new JButton("Построить график");
+        startGraphich.addActionListener(build);
+
+        JButton stopGraphich = new JButton("Стоп");
+        stopGraphich.addActionListener(new StopBuild(build));
 
         buttons.add(Box.createHorizontalStrut(6));
         buttons.add(inputFunction);
@@ -67,6 +73,8 @@ public class Window  {
         buttons.add(scaleLabel);
         buttons.add(Box.createHorizontalStrut(6));
         buttons.add(startGraphich);
+        buttons.add(Box.createHorizontalStrut(6));
+        buttons.add(stopGraphich);
         return buttons;
 
     }
