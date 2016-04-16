@@ -1,6 +1,8 @@
 package View;
 
 
+import Model.Point;
+
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,10 +24,9 @@ public class GraphTableModel {
 
     }
 
-    public GraphTableModel(List<Integer>xArray,List<Long>yArray) {
-        this.xArray=xArray;
-        for(long item:yArray)
-        this.yArray.add((int)item);
+    public void addPoint(Point point) {
+        xArray.add(point.getX());
+        yArray.add(point.getY());
 
         model = new DefaultTableModel(xArray.size(),2);
         List<String> header = new ArrayList<>();

@@ -19,6 +19,7 @@ public class Graphic extends JPanel {
     int zoomLengthY;
     int zoomStartX;
     int zoomStartY;
+    int pointer;
 
 
     public Graphic() {
@@ -33,11 +34,13 @@ public class Graphic extends JPanel {
         xList = new ArrayList<>();
         yList = new ArrayList<>();
 
-        zoomLengthX = (xLength * 25 / 100);
-        zoomLengthY = (yLength * 25 / 100);
+        zoomLengthX = xLength * 25 / 100;
+        zoomLengthY = yLength * 25 / 100;
 
-        zoomStartX=(startX*25/100);
-        zoomStartY=(startY*25/100);
+        zoomStartX = startX * 25 / 100;
+        zoomStartY = startY * 25 / 100;
+
+        pointer=pointer*25/100;
 
         if (maxX != 0.0 && maxY != 0.0)
             XYAvailible = true;
@@ -57,24 +60,6 @@ public class Graphic extends JPanel {
 
     }
 
-   /* public void setMaxMeasures(List<Integer> X, List<Long> Y) {
-        this.X = X;
-        this.Y = Y;
-        maxX = X.get(X.size() - 1);
-
-        for (Long y : Y) {
-            if (y > maxY)
-                maxY = y.intValue();
-        }
-
-        betweenPointsX = maxX / X.size();
-        betweenPointsY = maxY / Y.size();
-        pointX = (int) ((xLength * halfX) / maxX);
-        pointY = (int) (yLength * halfY) / maxY;
-        if (maxX != 0 && maxY != 0)
-            XYAvailible = true;
-
-    }*/
 
     public void paintGraphich(Graphics2D g2d) {
         try {
@@ -96,17 +81,7 @@ public class Graphic extends JPanel {
                 g2d.drawLine(currentX, currentY, nextX, nextY);
 
             }
-        } catch (ConcurrentModificationException e) {
-        }
-
-           /* int[] xArray = new int[xList.size()];
-            int[] yArray = new int[yList.size()];
-            Iterator iterator = yList.iterator();
-            for (int date : xList) {
-                xArray[xList.indexOf(date)] = date;
-                yArray[xList.indexOf(date)] = (int) iterator.next();
-            }
-            g2d.drawPolyline(xArray, yArray, xList.size());*/
+        } catch (ConcurrentModificationException e) {}
 
     }
 
@@ -115,8 +90,8 @@ public class Graphic extends JPanel {
         xLength = xLength + zoomLengthX;
         yLength = yLength + zoomLengthY;
 
-        startX-=zoomStartX;
-        startY-=zoomStartY;
+        startX -= zoomStartX;
+        startY -= zoomStartY;
 
     }
 
@@ -125,8 +100,8 @@ public class Graphic extends JPanel {
         xLength = xLength - zoomLengthX;
         yLength = yLength - zoomLengthY;
 
-        startX+=zoomStartX;
-        startY+=zoomStartY;
+        startX += zoomStartX;
+        startY += zoomStartY;
     }
 
     @Override
@@ -142,10 +117,10 @@ public class Graphic extends JPanel {
                 (int) (xLength * halfX + startX + margin), startY + yLength);
         //стрелки
         g2d.drawLine((int) (xLength * halfX + startX + margin), startY - margin,//стрелки
-                (int) (xLength * halfX + startX + margin) - 5, startY - margin + 5);
+                (int) (xLength * halfX + startX + margin) - pointer, startY - margin + pointer);
 
         g2d.drawLine((int) (xLength * halfX + startX + margin), startY - margin,
-                (int) (xLength * halfX + startX + margin) + 5, startY - margin + 5);
+                (int) (xLength * halfX + startX + margin) + pointer, startY - margin + pointer);
 
         // Надпись
         g2d.drawString("Y", (int) (xLength * halfX + startX + margin) - 10, startY - margin + 10);

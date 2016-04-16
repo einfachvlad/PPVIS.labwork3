@@ -27,7 +27,7 @@ public class Build implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if (window.numberOfArrays != 0 && window.numberOfElements != 0) {
             if (!running) {
-                build = new BuildThread(table, grap, window.numberOfElements, window.numberOfArrays);
+                build = new BuildThread(table, grap,window);
                 thread = new Thread(build);
                 thread.start();
                 running = true;
