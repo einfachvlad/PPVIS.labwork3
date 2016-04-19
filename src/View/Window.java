@@ -40,7 +40,7 @@ public class Window {
         grap.addMouseListener(dragging);
         grap.addMouseMotionListener(dragging);
 
-        mainwindow.setSize(970, 600);
+        mainwindow.setSize(970, 565);
         mainwindow.setVisible(true);
 
     }

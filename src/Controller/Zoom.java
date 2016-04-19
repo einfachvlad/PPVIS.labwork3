@@ -13,12 +13,13 @@ public class Zoom extends MouseAdapter implements MouseWheelListener {
     JLabel scaleLabel;
     GraphicPanel grap;
     int zoomSize;
+    JScrollPane scrollPane;
 
     public Zoom(Scale scale, JLabel scaleLabel, GraphicPanel grap) {
         this.scale = scale;
         this.scaleLabel = scaleLabel;
         this.grap = grap;
-        zoomSize = grap.getHeight() * 25 / 100;
+        zoomSize = grap.getHeight()/ 4;
     }
 
     @Override

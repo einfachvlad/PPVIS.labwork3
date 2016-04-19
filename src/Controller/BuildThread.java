@@ -49,7 +49,7 @@ public class BuildThread implements Runnable {
             model.addPoint(point);
             table.setModel(model.getModel());
             grap.setCoordinats(point);
-            currentCountElements += 50;
+            currentCountElements += 100;
 
 
                 //JPanel panel = new JPanel(new BorderLayout());

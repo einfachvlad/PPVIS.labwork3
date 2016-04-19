@@ -16,7 +16,7 @@ public class Point {
         this.Y = Y;
     }
 
-    public void setMeasures(int X, int Y) {
+    public void add(int X, int Y) {
         this.X = X;
         this.Y = Y;
     }
