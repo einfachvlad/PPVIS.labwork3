@@ -1,5 +1,7 @@
 package View;
 
+import Model.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -7,7 +9,7 @@ import java.util.List;
 
 
 public class Graphic extends JPanel {
-    private int pointWidth, nx, startY, oyk, oyx, startX, oxk, oxy, yLength, xLength, sw, xln, l2, margin, point, pointX, maxY, maxX, betweenPointsX, pointY, betweenPointsY;
+    private int pointWidth, nx, startY, oyk, oyx, startX, oxk, oxy, yLength, xLength, sw, xln, l2, margin, pointX, maxY, maxX, betweenPointsX, pointY, betweenPointsY;
     private double halfX, halfY;
     private int hX, hY;
     private boolean XYAvailible = false;
@@ -20,9 +22,14 @@ public class Graphic extends JPanel {
     int zoomStartX;
     int zoomStartY;
     int pointer;
+   public String xName;
+   public String yName;
 
 
-    public Graphic() {
+    public Graphic(String x,String y) {
+        xName=x;
+        yName=y;
+
         startY = 50; // начальный отступ по y
         startX = 50; //начальный отступ по х
         yLength = 400; // длина оси у
@@ -30,7 +37,6 @@ public class Graphic extends JPanel {
         halfX = halfY = (double) 0.5;
         hX = hY = 200;
         margin = 10;
-        point = 10;
         xList = new ArrayList<>();
         yList = new ArrayList<>();
 
@@ -40,19 +46,21 @@ public class Graphic extends JPanel {
         zoomStartX = startX * 25 / 100;
         zoomStartY = startY * 25 / 100;
 
-        pointer=pointer*25/100;
+        pointer = pointer * 25 / 100;
 
         if (maxX != 0.0 && maxY != 0.0)
             XYAvailible = true;
     }
 
+/*
     public void paintPoint(Graphics2D g2d) {
         g2d.drawLine(margin + startX + hX + X, margin + startY + hY - Y, margin + startX + hX + X, margin + startY + hY - Y);
     }
+*/
 
-    public void setCoordinats(int X, long Y) {
-        this.X = X;
-        this.Y = (int) Y;
+    public void setCoordinats(Model.Point point) {
+        this.X = point.getX();
+        this.Y = point.getY();
         xList.add(margin + startX + hX + this.X);
         yList.add(margin + startY + hY - this.Y);
 
@@ -81,7 +89,8 @@ public class Graphic extends JPanel {
                 g2d.drawLine(currentX, currentY, nextX, nextY);
 
             }
-        } catch (ConcurrentModificationException e) {}
+        } catch (ConcurrentModificationException e) {
+        }
 
     }
 
@@ -104,14 +113,7 @@ public class Graphic extends JPanel {
         startY += zoomStartY;
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(margin, margin, 500, 500);
-
-        g2d.setColor(Color.BLACK);
+    public void paintOY(Graphics2D g2d) {
         //осьY
         g2d.drawLine((int) (xLength * halfX + startX + margin), startY - margin,
                 (int) (xLength * halfX + startX + margin), startY + yLength);
@@ -123,7 +125,7 @@ public class Graphic extends JPanel {
                 (int) (xLength * halfX + startX + margin) + pointer, startY - margin + pointer);
 
         // Надпись
-        g2d.drawString("Y", (int) (xLength * halfX + startX + margin) - 10, startY - margin + 10);
+        g2d.drawString(yName, (int) (xLength * halfX + startX + margin) - 10, startY - margin + 10);
         //Деления
        /* int ly = yLength;
         int pointCount = (int) yLength / point;
@@ -151,10 +153,9 @@ public class Graphic extends JPanel {
                 lY = lY + pointX;
             }
         }*/
+    }
 
-
-        g2d.drawString("0", (int) (xLength * halfX + startX + margin) - 10, (int) (yLength * halfY + startY) + margin + 10);
-
+    public void paintOX(Graphics2D g2d) {
         // Ось Х
         g2d.drawLine(startX + margin, (int) (yLength * halfY + startY) + margin, xLength + startX + margin, (int) (yLength * halfY + startY) + margin);
         //стрелки
@@ -163,7 +164,7 @@ public class Graphic extends JPanel {
         g2d.drawLine(xLength + startX + margin, (int) (yLength * halfY + startY) + margin, xLength + startX + margin - 5,
                 (int) (yLength * halfY + startY) + margin + 5);
         // Надпись
-        g2d.drawString("Х", xLength + startX + margin - 10, (int) (yLength * halfY + startY) + margin - 10);
+        g2d.drawString(xName, xLength + startX + margin - 10, (int) (yLength * halfY + startY) + margin - 10);
 
         //Деления
        /* int lx = xLength;
@@ -190,9 +191,24 @@ public class Graphic extends JPanel {
                 lx = lx - pointX;
             }
         }*/
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, 500, 500);
+        g2d.setColor(Color.BLACK);
+        paintOY(g2d);
+        paintOX(g2d);
+        g2d.drawString("0", (int) (xLength * halfX + startX + margin) - 10, (int) (yLength * halfY + startY) + margin + 10);
+
+
         if (XYAvailible)
             paintGraphich(g2d);
 
         super.repaint();
     }
+
 }

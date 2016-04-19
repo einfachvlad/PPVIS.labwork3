@@ -16,24 +16,31 @@ public class Window {
     JLabel scaleLabel = new JLabel();
     Scale scale = new Scale();
     JTable table;
-    Graphic grap;
+    GraphicPanel grap;
     GraphTableModel tableModel;
 
     public Window() {
         mainwindow = new JFrame("Лабораторная работа №3");
         mainwindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        grap = new Graphic();
+        grap = new GraphicPanel("массивы","мс");
+
+        JScrollPane scrollPane = new JScrollPane(grap);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         mainwindow.add(table(), BorderLayout.WEST);
-        mainwindow.add(grap, BorderLayout.CENTER);
+        mainwindow.add(scrollPane, BorderLayout.CENTER);
         mainwindow.add(buttons(), BorderLayout.SOUTH);
 
         Zoom zoom = new Zoom(scale, scaleLabel, grap);
-        mainwindow.addMouseListener(zoom);
-        mainwindow.addMouseWheelListener(zoom);
+        Dragging dragging=new Dragging(scrollPane);
+        grap.addMouseListener(zoom);
+        grap.addMouseWheelListener(zoom);
+        grap.addMouseListener(dragging);
+        grap.addMouseMotionListener(dragging);
 
-        mainwindow.setSize(690, 550);
+        mainwindow.setSize(970, 600);
         mainwindow.setVisible(true);
 
     }
@@ -41,13 +48,13 @@ public class Window {
     private JComponent table() {
         table = new JTable();
 
-        tableModel = new GraphTableModel();
+        tableModel = new GraphTableModel("Кол-во элементов массива","Время сортировки");
         table.setModel(tableModel.getModel());
         JScrollPane scrollPane = new JScrollPane(table);
 
-        scrollPane.setMinimumSize(new Dimension(150, 400));
-        scrollPane.setPreferredSize(new Dimension(150, 400));
-        scrollPane.setMaximumSize(new Dimension(150, 400));
+        /*scrollPane.setMinimumSize(new Dimension(250, 400));
+        scrollPane.setPreferredSize(new Dimension(250, 400));
+        scrollPane.setMaximumSize(new Dimension(250, 400));*/
 
         return scrollPane;
     }

@@ -17,10 +17,10 @@ public class BuildThread implements Runnable {
     private int currentCountElements = 2;
     private int numberOfArrays;
     JTable table = new JTable();
-    Graphic grap;
+    GraphicPanel grap;
     Window window;
 
-    public BuildThread(JTable table, Graphic grap, Window window) {
+    public BuildThread(JTable table, GraphicPanel grap, Window window) {
         this.window = window;
         this.maxCountElements = window.numberOfElements;
         this.numberOfArrays = window.numberOfArrays;
@@ -33,7 +33,7 @@ public class BuildThread implements Runnable {
 
         Sort sort = new Sort();
         ArraysGenerator generator = new ArraysGenerator();
-        GraphTableModel model = new GraphTableModel();
+        GraphTableModel model = new GraphTableModel("Кол-во элементов массива","Время сортировки");
         while (currentCountElements < maxCountElements + 1) {
             AverageTime averageTime = new AverageTime();
             while (averageTime.size()!=numberOfArrays) {
@@ -48,21 +48,16 @@ public class BuildThread implements Runnable {
 
             model.addPoint(point);
             table.setModel(model.getModel());
-            // grap.setCoordinats(currentCountElements,point.getAverageSortTime());
+            grap.setCoordinats(point);
             currentCountElements += 50;
-           /* if(currentCountElements>250)
-            {
+
 
                 //JPanel panel = new JPanel(new BorderLayout());
                // panel.add(grap);
-                JScrollPane scrollPane = new JScrollPane(window.mainwindow);
-               //window.mainwindow.remove(grap);
-               // JScrollPane scrollPane=new JScrollPane(grap);
-                scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
                 //scrollPane.add(window.mainwindow);
                 //window.mainwindow.add(panel, BorderLayout.CENTER);
-            }*/
+
 
             try {
                 Thread.sleep(50);

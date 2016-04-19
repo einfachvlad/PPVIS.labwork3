@@ -10,16 +10,16 @@ import java.util.List;
 
 
 public class GraphTableModel {
-    private DefaultTableModel model;
-    private List<Integer> xArray = new ArrayList<>();
-    private List<Integer> yArray = new ArrayList<>();
+    private DefaultTableModel model=new DefaultTableModel();
+    private List<Integer> xArray=new ArrayList<>();
+    private List<Integer> yArray=new ArrayList<>();
+   private List<String> header = new ArrayList<>();;
 
-    public GraphTableModel(){
+    public GraphTableModel(String x,String y){
         model = new DefaultTableModel(xArray.size(),2);
-        List<String> header = new ArrayList<>();
 
-        header.add("x");
-        header.add("y");
+        header.add(x);
+        header.add(y);
         model.setColumnIdentifiers(header.toArray());
 
     }
@@ -29,10 +29,6 @@ public class GraphTableModel {
         yArray.add(point.getY());
 
         model = new DefaultTableModel(xArray.size(),2);
-        List<String> header = new ArrayList<>();
-
-        header.add("x");
-        header.add("y");
 
         Iterator yIterator=yArray.iterator();
 
@@ -44,7 +40,6 @@ public class GraphTableModel {
         }
         model.setColumnIdentifiers(header.toArray());
     }
-
 
 
 

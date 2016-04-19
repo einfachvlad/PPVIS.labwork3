@@ -1,6 +1,7 @@
 package Controller;
 
 import View.Graphic;
+import View.GraphicPanel;
 import View.Window;
 
 import javax.swing.*;
@@ -15,9 +16,9 @@ public class Build implements ActionListener {
     boolean running;
     Window window;
     JTable table = new JTable();
-    Graphic grap = new Graphic();
+    GraphicPanel grap;
 
-    public Build(JTable table, Graphic grap, Window window) {
+    public Build(JTable table, GraphicPanel grap, Window window) {
         this.window = window;
         this.table = table;
         this.grap = grap;
